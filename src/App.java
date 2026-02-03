@@ -10,7 +10,16 @@ public class App {
 
     public static void main(String[] args) throws Exception {
    
+
+      
+
+      int i_ran_word = 0;
+
+
+        textfiles files = new textfiles();
         hangman game = new hangman();
+
+      //String n = files.textfiles_main(i_ran_word);
         game.game_main();
 
     }
