@@ -9,11 +9,8 @@ public class App {
 
 
     public static void main(String[] args) throws Exception {
-   
 
-      
-
-      int i_ran_word = 0;
+      //int i_ran_word = 19;
 
 
         textfiles files = new textfiles();
