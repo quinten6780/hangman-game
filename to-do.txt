@@ -1,0 +1,9 @@
+todo
+
+highscore message
+get highscore 
+write highscore
+compare highscore 
+
+
+hangman with variables

@@ -14,18 +14,27 @@ class hangman {
     String user_name;
     String ran_word;
     String end_difficulty;
+    String highscore_placement;
 
-    int game_difficulty;
+    char game_difficulty;
+    int user_times_guessed;
+    int leaderboard_type = 0;
     int fouten = 0;
     int i_ran_word = 0;
     boolean word_guessed = false;
-    
-    void game_main() {      // all constructors and main walktrough of game
-        
+    boolean on_leaderbord = false;
 
+    textfiles files = new textfiles();
+    
+    void game_main() throws Exception{      // all constructors and main walktrough of game
+
+                                                                    //textfiles files = new textfiles();
+                                                            // files.write_highscore();
         game_config();
         gen_word();
-        guess_word();                           
+        guess_word();
+        report_highscore();
+
     }
 
     public void print_hangman (int fouten) {
@@ -73,19 +82,23 @@ System.out.println("\n");
         switch (game_difficulty) {
             case 'a': System.out.println(green+"Easy mode selected"+reset);
                 i_ran_word = 0;
-                end_difficulty = "easy mode";
+                leaderboard_type = 0;
+                end_difficulty = "easy";
                 break;
             case 'b': System.out.println(green+"Easy mode selected"+reset);
                 i_ran_word = 30;
+                leaderboard_type = 4;
                 end_difficulty = "medium";
                 break;
             case 'c': System.out.println(green+"Easy mode selected"+reset);
                 i_ran_word = 60;
-                end_difficulty = "hard mode";
+                leaderboard_type = 8;
+                end_difficulty = "hard";
                 break;
             default: System.out.println(red+"Thats not a valid choice. \nEasy mode selected"+reset);
                 i_ran_word = 0;
-                end_difficulty = "easy mode";
+                leaderboard_type = 0;
+                end_difficulty = "easy";
                 break;
         }
     }
@@ -102,9 +115,12 @@ System.out.println("\n");
 
     void guess_word() {                   // makes the usser guess the word   
 
+        ran_word = "a";
+
         int letter_counter = ran_word.length();
         char[] letters = ran_word.toCharArray();
         char[] result = ran_word.toCharArray();
+
     for (int s = 0; s < ran_word.length(); s++){
         result[s] = '_';
         System.out.print(result[s]+" ");
@@ -112,6 +128,7 @@ System.out.println("\n");
          System.out.println("    config:   "+ran_word);
     while (letter_counter != 0) {
         System.out.print("\nYour guess: "); char user_guess = scanner.next().charAt(0);
+            user_times_guessed++;
         int b = 0;   
             for (int i = 0; i < ran_word.length(); i++){
                 b = b + 0;
@@ -135,12 +152,19 @@ System.out.println("\n");
     }
 }
 
+    void report_highscore() throws Exception {                // report back the stats and score    later: highscore system
+        highscore_placement = files.write_highscore(leaderboard_type, user_times_guessed);
+        on_leaderbord = files.user_on_leaderboard();
 
 
-    void report_highscore() {                // report back the stats and score    later: highscore system
-           
+        if (on_leaderbord == true) {
+            //System.out.println(green+"Well done "+user_name+" you reached the leaderbord!\nYour in "+highscore_placement+" place in "+end_difficulty+" difficulty."+reset);
+            System.out.println(green+"Goodjob, "+user_name+"! \nThe word was: "+ran_word+". \nFinal score: "+user_times_guessed+" guesses. \nDifficulty: "+end_difficulty + ".\nYour position on the "+end_difficulty+" leaderboard: "+highscore_placement+reset);
+        }
+        else;
 
 
+    
 
 
     }
