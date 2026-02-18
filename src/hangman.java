@@ -32,7 +32,6 @@ class hangman {
     int woorden_easy_dutch = 30;
     int woorden_medium_dutch = 30;
     int woorden_hard_dutch = 30;
-
     int i_difficulty;
 
     textfiles files = new textfiles();
@@ -100,11 +99,13 @@ class hangman {
                     r_woorden = woorden_easy_eng + woorden_medium_eng + woorden_hard_eng +1+ woorden_easy_dutch;
                     break;
                 case 'c': System.out.println(green+"Hard mode selected"+reset);
+                    i_difficulty = woorden_hard_dutch;
                     leaderboard_type = 8;
                     end_difficulty = "hard";
                     r_woorden = woorden_easy_eng + woorden_medium_eng + woorden_hard_eng +1+ woorden_easy_dutch + woorden_medium_dutch;
                     break;
                 default: System.out.println(red+"Thats not a valid choice. \nEasy mode selected"+reset);
+                    i_difficulty = woorden_easy_dutch;
                     game_difficulty = 'a';
                     leaderboard_type = 0;
                     end_difficulty = "easy";
@@ -160,6 +161,9 @@ class hangman {
         letter_counter = ran_word.length();
         char[] letters = ran_word.toCharArray();
         char[] result = ran_word.toCharArray();
+        String guessed_letters = "";
+
+        
 
     for (int s = 0; s < ran_word.length(); s++){
         result[s] = '_';
@@ -169,10 +173,9 @@ class hangman {
 //System.out.println("lettercounter   "+letter_counter);
 
      while (letter_counter > 0 ) {
-        
+        System.out.println("    your already guessed: "+guessed_letters);
         System.out.print("\nYour guess: "); char user_guess = scanner.next().charAt(0);
             user_times_guessed++;
-            
         int b = 0;   
             for (int i = 0; i < ran_word.length(); i++){
                 b = b + 0;
@@ -187,7 +190,9 @@ class hangman {
     }    
     if (b == 0) {
             fouten++;
+            guessed_letters = guessed_letters + " " +red+user_guess+reset+",";
         }
+        //else guessed_letters = guessed_letters + " " +green+user_guess+reset+",";
     print_hangman(fouten);
     for (int w = 0; w < ran_word.length(); w++) {
         if (result[w] != '_') {
@@ -251,6 +256,7 @@ System.out.println("\n");
     
 
         System.out.println(cyan+"\nStats:");
+        System.out.println("The word was: "+ran_word);
         System.out.println("Language word: "+end_language);
         System.out.println("Guesses: "+user_times_guessed);
         System.out.println("Difficulty: "+end_difficulty);
