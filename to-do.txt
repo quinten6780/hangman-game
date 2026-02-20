@@ -7,3 +7,13 @@ compare highscore
 
 
 hangman with variables
+
+
+
+
+blue 
+
+black
+cyan
+
+yellow

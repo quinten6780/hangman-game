@@ -3,7 +3,8 @@
 public class App {
     public static void main(String[] args) throws Exception {
 
-        hangman game = new hangman();
+        gui userInterface = new gui();
+        hangman game = new hangman(userInterface);
         game.game_main();
 
     }

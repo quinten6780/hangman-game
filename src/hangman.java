@@ -1,9 +1,9 @@
+import java.io.IOException;
 import java.util.Random;
-import java.util.Scanner;
 
 class hangman {
 
-    final Scanner scanner = new Scanner(System.in);
+    //final Scanner scanner = new Scanner(System.in);
     final String green = "\u001B[32m";
     final String reset = "\u001B[0m";
     final String red = "\u001B[31m";
@@ -16,12 +16,11 @@ class hangman {
     String end_language;
 
     char game_difficulty;
+    char language;
     int user_times_guessed;
     int letter_counter;
     int leaderboard_type = 0;
     int fouten = 0;
-    char i_ran_word = 'a';
-    char language = 'a';
     boolean on_leaderbord = false;
     int r_woorden;
 
@@ -35,129 +34,169 @@ class hangman {
     int i_difficulty;
 
     textfiles files = new textfiles();
+    gui gui = new gui();
+
+
+
     
-    void game_main() throws Exception{      // all constructors and main walktrough of game
-         game_config();
-         gen_word();
-         guess_word();
-         report_highscore();
+    void game_main() throws Exception {      // all constructors and main walktrough of game
+    
+        gui.gui_main();
+        gui.waitForConfig();
+        
+       //game_config();
+        //gen_word();
+        
+        
+       // guess_word();
+        //report_highscore();
 
     }
 
     void game_config(){    // welcome the player and gets game config     Later: custom mode       language
-        System.out.println("\nWelcome to Hangman");
-        System.out.print("Choose your name: "); user_name = scanner.next();
-        System.out.println("\nA Easy mode\nB Medium mode\nC Hard mode");
-        System.out.print("Please choose your difficulty: "); game_difficulty = scanner.next().charAt(0);
-        System.out.println("\n");
-        System.out.println("A English \nB Dutch");        
-        System.out.print("Please choose the language of the word: "); language = scanner.next().charAt(0);
+   //     System.out.println("\nWelcome to Hangman");
+  //      System.out.print("Choose your name: "); user_name = scanner.next();
+  //      System.out.println("\nA Easy mode\nB Medium mode\nC Hard mode");
+    //    System.out.print("Please choose your difficulty: "); game_difficulty = scanner.next().charAt(0);
+   //     System.out.println("\n");
+  //      System.out.println("A English \nB Dutch");        
+   //     System.out.print("Please choose the language of the word: "); language = scanner.next().charAt(0);
+        language = gui.get_language();
+        game_difficulty = gui.get_game_difficulty();
+   
         switch (language) {
-            case 'a': System.out.println(green+"English mode selected"+reset);
-                    end_language = "English";
-                    switch (game_difficulty) {
-                case 'a': System.out.println(green+"Easy mode selected"+reset);
-                    i_difficulty = woorden_easy_eng;
-                    leaderboard_type = 0;
-                    end_difficulty = "easy";
-                    r_woorden = 0; 
-                    break;
-                case 'b': System.out.println(green+"Medium mode selected"+reset);
-                    i_difficulty = woorden_medium_eng;
-                    leaderboard_type = 4;
-                    end_difficulty = "medium";
-                    r_woorden = woorden_easy_eng;
-                    break;
-                case 'c': System.out.println(green+"Hard mode selected"+reset);
-                    i_difficulty = woorden_hard_eng;
-                    leaderboard_type = 8;
-                    end_difficulty = "hard";
-                    r_woorden = woorden_easy_eng + woorden_medium_eng;
-                    break;
-                default: System.out.println(red+"Thats not a valid choice. \nEasy mode selected"+reset);
-                    i_difficulty = woorden_easy_eng;
-                    game_difficulty = 'a';
-                    leaderboard_type = 0;
-                    end_difficulty = "easy";
-                    r_woorden = 0;
-                    break;
-            }
-                break;
-            case 'b': System.out.println(green+"Dutch mode selected"+reset);
-                    end_language = "Dutch";
-                    switch (game_difficulty) {
-                case 'a': System.out.println(green+"Easy mode selected"+reset);
-                    i_difficulty = woorden_easy_eng;
-                    leaderboard_type = 0;
-                    end_difficulty = "easy";
-                    r_woorden = woorden_easy_eng + woorden_medium_eng + woorden_hard_eng + 1; 
-                    break;
-                case 'b': System.out.println(green+"Medium mode selected"+reset);
-                    i_difficulty = woorden_medium_eng;
-                    leaderboard_type = 4;
-                    end_difficulty = "medium";
-                    r_woorden = woorden_easy_eng + woorden_medium_eng + woorden_hard_eng +1+ woorden_easy_dutch;
-                    break;
-                case 'c': System.out.println(green+"Hard mode selected"+reset);
-                    i_difficulty = woorden_hard_dutch;
-                    leaderboard_type = 8;
-                    end_difficulty = "hard";
-                    r_woorden = woorden_easy_eng + woorden_medium_eng + woorden_hard_eng +1+ woorden_easy_dutch + woorden_medium_dutch;
-                    break;
-                default: System.out.println(red+"Thats not a valid choice. \nEasy mode selected"+reset);
-                    i_difficulty = woorden_easy_dutch;
-                    game_difficulty = 'a';
-                    leaderboard_type = 0;
-                    end_difficulty = "easy";
-                    r_woorden = woorden_easy_eng + woorden_medium_eng + woorden_hard_eng +1;
-                    break;
-            }
-                break;
-            default: System.out.println(red+"Thats not a valid choice. \nEnglish mode selected"+reset);
-            language = 'a';
-            end_language = "English";
+            case 'a','A'-> {
+                System.out.println(green+"English mode selected"+reset);
+                end_language = "English";
                 switch (game_difficulty) {
-                case 'a': System.out.println(green+"Easy mode selected"+reset);
-                    i_difficulty = woorden_easy_eng;
-                    leaderboard_type = 0;
-                    end_difficulty = "easy";
-                    r_woorden = 0; 
-                    break;
-                case 'b': System.out.println(green+"Medium mode selected"+reset);
-                    i_difficulty = woorden_medium_eng;
-                    leaderboard_type = 4;
-                    end_difficulty = "medium";
-                    r_woorden = woorden_easy_eng;
-                    break;
-                case 'c': System.out.println(green+"Hard mode selected"+reset);
-                    i_difficulty = woorden_hard_eng;
-                    leaderboard_type = 8;
-                    end_difficulty = "hard";
-                    r_woorden = woorden_easy_eng + woorden_medium_eng;
-                    break;
-                default: System.out.println(red+"Thats not a valid choice. \nEasy mode selected"+reset);
-                    i_difficulty = woorden_easy_eng;
-                    game_difficulty = 'a';
-                    leaderboard_type = 0;
-                    end_difficulty = "easy";
-                    r_woorden = 0;
-                    break;
+                    case 'a','A' -> {
+                        System.out.println(green+"Easy mode selected"+reset);
+                        i_difficulty = woorden_easy_eng;
+                        leaderboard_type = 0;
+                        end_difficulty = "easy";
+                        r_woorden = 0;
+                }
+                    case 'b','B' -> {
+                        System.out.println(green+"Medium mode selected"+reset);
+                        i_difficulty = woorden_medium_eng;
+                        leaderboard_type = 4;
+                        end_difficulty = "medium";
+                        r_woorden = woorden_easy_eng;
+                }
+                    case 'c','C' -> {
+                        System.out.println(green+"Hard mode selected"+reset);
+                        i_difficulty = woorden_hard_eng;
+                        leaderboard_type = 8;
+                        end_difficulty = "hard";
+                        r_woorden = woorden_easy_eng + woorden_medium_eng;
+                }
+                    default -> {
+                        System.out.println(red+"Thats not a valid choice. \nEasy mode selected"+reset);
+                        i_difficulty = woorden_easy_eng;
+                        game_difficulty = 'a';
+                        leaderboard_type = 0;
+                        end_difficulty = "easy";
+                        r_woorden = 0;
+                }
+                }
             }
-                break;
+            case 'b','B' -> {
+                System.out.println(green+"Dutch mode selected"+reset);
+                end_language = "Dutch";
+                switch (game_difficulty) {
+                    case 'a','A' -> {
+                        System.out.println(green+"Easy mode selected"+reset);
+                        i_difficulty = woorden_easy_eng;
+                        leaderboard_type = 0;
+                        end_difficulty = "easy";
+                        r_woorden = woorden_easy_eng + woorden_medium_eng + woorden_hard_eng + 1;
+                }
+                    case 'b','B' -> {
+                        System.out.println(green+"Medium mode selected"+reset);
+                        i_difficulty = woorden_medium_eng;
+                        leaderboard_type = 4;
+                        end_difficulty = "medium";
+                        r_woorden = woorden_easy_eng + woorden_medium_eng + woorden_hard_eng +1+ woorden_easy_dutch;
+                }
+                    case 'c','C' -> {
+                        System.out.println(green+"Hard mode selected"+reset);
+                        i_difficulty = woorden_hard_dutch;
+                        leaderboard_type = 8;
+                        end_difficulty = "hard";
+                        r_woorden = woorden_easy_eng + woorden_medium_eng + woorden_hard_eng +1+ woorden_easy_dutch + woorden_medium_dutch;
+                }
+                    default -> {
+                        System.out.println(red+"Thats not a valid choice. \nEasy mode selected"+reset);
+                        i_difficulty = woorden_easy_dutch;
+                        game_difficulty = 'a';
+                        leaderboard_type = 0;
+                        end_difficulty = "easy";
+                        r_woorden = woorden_easy_eng + woorden_medium_eng + woorden_hard_eng +1;
+                }
+                }
+            }
+            default -> {
+                System.out.println(red+"Thats not a valid choice. \nEnglish mode selected"+reset);
+                language = 'a';
+                end_language = "English";
+                switch (game_difficulty) {
+                    case 'a' -> {
+                        System.out.println(green+"Easy mode selected"+reset);
+                        i_difficulty = woorden_easy_eng;
+                        leaderboard_type = 0;
+                        end_difficulty = "easy";
+                        r_woorden = 0;
+                }
+                    case 'b' -> {
+                        System.out.println(green+"Medium mode selected"+reset);
+                        i_difficulty = woorden_medium_eng;
+                        leaderboard_type = 4;
+                        end_difficulty = "medium";
+                        r_woorden = woorden_easy_eng;
+                }
+                    case 'c' -> {
+                        System.out.println(green+"Hard mode selected"+reset);
+                        i_difficulty = woorden_hard_eng;
+                        leaderboard_type = 8;
+                        end_difficulty = "hard";
+                        r_woorden = woorden_easy_eng + woorden_medium_eng;
+                }
+                    default -> {
+                        System.out.println(red+"Thats not a valid choice. \nEasy mode selected"+reset);
+                        i_difficulty = woorden_easy_eng;
+                        game_difficulty = 'a';
+                        leaderboard_type = 0;
+                        end_difficulty = "easy";
+                        r_woorden = 0;
+                }
+                }
+            }
         }
+        System.out.println("i_diff1: "+i_difficulty);
     }
 
     void gen_word() {                // generate a random word for the usser to guess            later: gui
+        
+        System.out.println("i_diff  "+i_difficulty);
+        System.out.println("r_woorden(pre_)  "+r_woorden);
+        
+        
+        
         Random random = new Random();
         r_woorden = random.nextInt(i_difficulty) + r_woorden;
        try {
-            ran_word = textfiles.get_word(r_woorden);
-        } catch (Exception e) {
-            System.err.println("ln 61");
+           // ran_word = textfiles.get_word(r_woorden);
+            String ran_ord = textfiles.get_word(r_woorden);
+            this.ran_word = ran_ord;
+        } catch (IOException e) {
+            System.err.println("err: ln 182");
        }
+       System.out.println("this.randord: "+this.ran_word);
+       
+       
     }
 
-    void guess_word() {                   // makes the usser guess the word   
+    void guess_word(char user_guess) {                   // makes the usser guess the word   
         letter_counter = ran_word.length();
         char[] letters = ran_word.toCharArray();
         char[] result = ran_word.toCharArray();
@@ -172,10 +211,20 @@ class hangman {
 //System.out.println("    config:   "+ran_word);
 //System.out.println("lettercounter   "+letter_counter);
 
+    
+
      while (letter_counter > 0 ) {
         System.out.println("    your already guessed: "+guessed_letters);
-        System.out.print("\nYour guess: "); char user_guess = scanner.next().charAt(0);
-            user_times_guessed++;
+        System.out.print("\nYour guess1: "); 
+        
+        gui.waitForConfig3();
+        user_guess = gui.get_user_guess();
+        
+        
+        
+        System.out.println("usert_guess   "+user_guess);
+        
+        user_times_guessed++;
         int b = 0;   
             for (int i = 0; i < ran_word.length(); i++){
                 b = b + 0;
@@ -192,7 +241,7 @@ class hangman {
             fouten++;
             guessed_letters = guessed_letters + " " +red+user_guess+reset+",";
         }
-        //else guessed_letters = guessed_letters + " " +green+user_guess+reset+",";
+       // else guessed_letters = guessed_letters + " " +green+user_guess+reset+",";
     print_hangman(fouten);
     for (int w = 0; w < ran_word.length(); w++) {
         if (result[w] != '_') {
@@ -208,28 +257,17 @@ class hangman {
 
         System.out.println("\n\n");
     switch (fouten) {
-        case 0: System.out.print("\n|\n|\n|\n|\n|\n|\n|\n");
-            break;
-        case 1: System.out.print("\n|\n|\n|\n|\n|\n|\n|\n|========= ");
-            break;
-        case 2: System.out.print("\n|\n|\n|   |\n|   |\n|   |\n|   |\n|   |\n|========= ");
-            break;
-        case 3: System.out.print("\n|\n|    ____\n|   |\n|   |\n|   |\n|   |\n|   |\n|========= ");
-            break;
-        case 4: System.out.print("\n|\n|    ____\n|   |    |\n|   |\n|   |\n|   |\n|   |\n|========= ");
-            break;
-        case 5: System.out.print("\n|\n|    ____\n|   |    |\n|   |    0\n|   |\n|   |\n|   |\n|========= ");
-            break;
-        case 6: System.out.print("\n|\n|    ____\n|   |    |\n|   |    0\n|   |    |\n|   |\n|   |\n|========= ");
-            break;
-        case 7: System.out.print("\n|\n|    ____\n|   |    |\n|   |    0\n|   |   /|\n|   |\n|   |\n|========= ");
-            break;
-        case 8: System.out.print("\n|\n|    ____\n|   |    |\n|   |    0\n|   |   /|\\  \n|   |\n|   |\n|========= ");
-            break;
-        case 9: System.out.print("\n|\n|    ____\n|   |    |\n|   |    0\n|   |   /|\\  \n|   |   /\n|   |\n|========= ");
-            break;
-        case 10: System.out.print("\n|\n|    ____\n|   |    |\n|   |    0\n|   |   /|\\  \n|   |   / \\ \n|   |\n|========= ");
-            break;
+        case 0 -> System.out.print("\n|\n|\n|\n|\n|\n|\n|\n");
+        case 1 -> System.out.print("\n|\n|\n|\n|\n|\n|\n|\n|========= ");
+        case 2 -> System.out.print("\n|\n|\n|   |\n|   |\n|   |\n|   |\n|   |\n|========= ");
+        case 3 -> System.out.print("\n|\n|    ____\n|   |\n|   |\n|   |\n|   |\n|   |\n|========= ");
+        case 4 -> System.out.print("\n|\n|    ____\n|   |    |\n|   |\n|   |\n|   |\n|   |\n|========= ");
+        case 5 -> System.out.print("\n|\n|    ____\n|   |    |\n|   |    0\n|   |\n|   |\n|   |\n|========= ");
+        case 6 -> System.out.print("\n|\n|    ____\n|   |    |\n|   |    0\n|   |    |\n|   |\n|   |\n|========= ");
+        case 7 -> System.out.print("\n|\n|    ____\n|   |    |\n|   |    0\n|   |   /|\n|   |\n|   |\n|========= ");
+        case 8 -> System.out.print("\n|\n|    ____\n|   |    |\n|   |    0\n|   |   /|\\  \n|   |\n|   |\n|========= ");
+        case 9 -> System.out.print("\n|\n|    ____\n|   |    |\n|   |    0\n|   |   /|\\  \n|   |   /\n|   |\n|========= ");
+        case 10 -> System.out.print("\n|\n|    ____\n|   |    |\n|   |    0\n|   |   /|\\  \n|   |   / \\ \n|   |\n|========= ");
     }
     if (fouten <= 9) {
         System.out.print(red+"    wrong guesses: "+fouten+"/10"+reset);
@@ -237,7 +275,7 @@ class hangman {
     else { System.out.print(red+"    wrong guesses: 10/10, \n               You failed!"+reset);
     letter_counter = -1;
     }
-System.out.println("\n");
+    System.out.println("\n");
     }
 
     void report_highscore() throws Exception {                // report back the stats and score    later: highscore system
@@ -264,4 +302,9 @@ System.out.println("\n");
 
 
     }
+
+    public hangman(gui gui) {
+        this.gui = gui;
+    }
+
 }
