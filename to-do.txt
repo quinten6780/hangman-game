@@ -7,3 +7,19 @@ compare highscore
 
 
 hangman with variables
+
+
+
+probleemen:
+-in guess screen als je geen letter invoert dan error
+-als je 2x dezelfde letter clicked dan is die fout
+-eerste letter die je raad telt niet 
+
+
+add:
+-whole highscore in end screen
+-stats page
+    amount of guesses
+    the word
+    language
+    
