@@ -7,5 +7,5 @@ public class App {
         hangman game = new hangman(userInterface);
         game.game_main();
 
-    }
+    } 
 }
